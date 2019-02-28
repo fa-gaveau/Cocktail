@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 
 class Homepage extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class Homepage extends Component {
   };
 
   render() {
-    console.log(this.state.cocktails);
+    //console.log(this.state.cocktails);
     //un console.log(this.state) permet de voir le state et l'actualisation. ATTENTION jamais de console.log après un setState car console.log s'execute plus vite que le setState
     return (
       <div>
@@ -58,12 +59,25 @@ class Homepage extends Component {
         >
           Recherche
         </button>
+
         <div>
           {this.state.cocktails.map((cocktail, index) => {
+            //console.log(cocktail); //pour savoir ce qu'on peut recuperer de l'API
             return (
               <div key={index}>
                 <p>{cocktail.strDrink}</p>{' '}
-                <img src={cocktail.strDrinkThumb} alt={cocktail.strDrink} />
+                <NavLink
+                  to={{
+                    pathname: '/detail', //Navlink permet en cliquant sur l'image de diriger vers cette route définit avec son composant dans App.js
+                    state: {
+                      cocktailID: cocktail.idDrink,
+                      cocktailName: cocktail.strDrink,
+                      cocktailImage: cocktail.strDrinkThumb //On définit le(s) state(s) à transmettre à detail
+                    }
+                  }}
+                >
+                  <img src={cocktail.strDrinkThumb} alt={cocktail.strDrink} />
+                </NavLink>
               </div>
               //Du JSON de l'API récupéré on utilise un map sur le state à jour pour ce qu'on veut afficher.
               // On définit un élément (ici nommé cocktail) puis return (nécessaire pour affichage) avec pour chaque élément l'affichage du nom et de l'image dans ce cas.
